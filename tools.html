@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools — STRATA</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="wordmark"><span class="tick"></span>STRATA <small>study portal</small></a>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="tools.html" class="active">Tools</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="page-head">
+  <div class="wrap">
+    <div class="hero-eyebrow">tools</div>
+    <h1>Working calculators</h1>
+    <p>Small tools for the conversions and quick checks that come up constantly in problem sets. Everything updates as you type.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+
+    <div id="travel-time" class="tool-panel">
+      <h3>Travel-time calculator</h3>
+      <p>Straight-ray, vertical-incidence estimate: given a velocity and a depth, find one-way and two-way travel time. Useful as a first check before a full ray-tracing model.</p>
+      <form id="travel-time-tool">
+        <div class="field-row">
+          <div class="field">
+            <label for="tt-velocity">Velocity (m/s)</label>
+            <input type="number" id="tt-velocity" name="velocity" placeholder="e.g. 4000" step="any">
+          </div>
+          <div class="field">
+            <label for="tt-depth">Depth (m)</label>
+            <input type="number" id="tt-depth" name="depth" placeholder="e.g. 1200" step="any">
+          </div>
+        </div>
+        <div class="tool-result">Enter velocity and depth to calculate travel time.</div>
+      </form>
+    </div>
+
+    <div id="units" class="tool-panel">
+      <h3>Unit converter</h3>
+      <p>Common conversions between field units and SI, for gravity, magnetic field, depth, and density.</p>
+      <form id="unit-tool">
+        <div class="field-row">
+          <div class="field">
+            <label for="unit-conversion">Conversion</label>
+            <select id="unit-conversion" name="conversion">
+              <option value="gravity">mGal → m/s²</option>
+              <option value="gravity-rev">m/s² → mGal</option>
+              <option value="magnetic">nT → Gauss</option>
+              <option value="magnetic-rev">Gauss → nT</option>
+              <option value="depth">m → ft</option>
+              <option value="depth-rev">ft → m</option>
+              <option value="density">g/cm³ → kg/m³</option>
+              <option value="density-rev">kg/m³ → g/cm³</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="unit-value">Value</label>
+            <input type="number" id="unit-value" name="value" placeholder="e.g. 980" step="any">
+          </div>
+        </div>
+        <div class="tool-result">Enter a value to convert.</div>
+      </form>
+    </div>
+
+    <div id="wavelength" class="tool-panel">
+      <h3>Wavelength converter</h3>
+      <p>Seismic wavelength from velocity and frequency (λ = v / f) — a quick check on vertical resolution for a given source.</p>
+      <form id="wave-tool">
+        <div class="field-row">
+          <div class="field">
+            <label for="wave-velocity">Velocity (m/s)</label>
+            <input type="number" id="wave-velocity" name="velocity" placeholder="e.g. 3000" step="any">
+          </div>
+          <div class="field">
+            <label for="wave-frequency">Frequency (Hz)</label>
+            <input type="number" id="wave-frequency" name="frequency" placeholder="e.g. 30" step="any">
+          </div>
+        </div>
+        <div class="tool-result">Enter velocity and frequency to find wavelength.</div>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="contour"></div>
+  <div class="wrap footer-inner">
+    <p>STRATA — a self-hosted study portal for geophysics coursework.</p>
+    <p>Built for review, not for grading.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

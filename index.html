@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRATA — a geophysics study portal</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="wordmark"><span class="tick"></span>STRATA <small>study portal</small></a>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Dashboard</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="tools.html">Tools</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="hero-trace"></canvas>
+  <div class="hero-inner">
+    <div class="wrap">
+      <div class="hero-eyebrow">for geophysics students</div>
+      <h1>Where the signal becomes the study note.</h1>
+      <p>Notes, references, and working tools across seismology, gravity, magnetics, and tectonics — organized the way the subsurface is: in layers.</p>
+      <div class="hero-actions">
+        <a href="subjects.html" class="btn btn-primary">Browse subjects</a>
+        <a href="tools.html" class="btn btn-ghost">Open tools</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="section-label"><span class="tick" style="background:var(--rust)"></span>Subject library</h2>
+      <p class="section-note">Six areas, each with its own working range of scale — from millihertz tides to million-year tectonics.</p>
+    </div>
+    <div class="subject-grid">
+
+      <a href="subjects.html#seismology" class="subject-card" style="--card-color: var(--rust)">
+        <span class="range">0.01–50 Hz</span>
+        <h3>Seismology</h3>
+        <p>Body waves, surface waves, travel-time curves, and earthquake source mechanics.</p>
+      </a>
+
+      <a href="subjects.html#gravity" class="subject-card" style="--card-color: var(--teal)">
+        <span class="range">µGal precision</span>
+        <h3>Gravity &amp; Geodesy</h3>
+        <p>Bouguer and free-air corrections, isostasy, and the shape of the geoid.</p>
+      </a>
+
+      <a href="subjects.html#magnetism" class="subject-card" style="--card-color: var(--violet)">
+        <span class="range">nT · IGRF</span>
+        <h3>Geomagnetism</h3>
+        <p>The main field, secular variation, paleomagnetism, and magnetic surveying.</p>
+      </a>
+
+      <a href="subjects.html#tectonics" class="subject-card" style="--card-color: var(--ochre)">
+        <span class="range">Ma timescale</span>
+        <h3>Geodynamics &amp; Tectonics</h3>
+        <p>Plate boundaries, mantle convection, stress regimes, and rheology.</p>
+      </a>
+
+      <a href="subjects.html#exploration" class="subject-card" style="--card-color: var(--blue)">
+        <span class="range">0–5 km depth</span>
+        <h3>Exploration Geophysics</h3>
+        <p>Reflection and refraction surveys, well logging, and resource targeting.</p>
+      </a>
+
+      <a href="subjects.html#remote-sensing" class="subject-card" style="--card-color: var(--sage)">
+        <span class="range">10⁻¹–10³ km scale</span>
+        <h3>Remote Sensing</h3>
+        <p>InSAR, gravimetric satellites, and imaging the Earth from orbit.</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap two-col">
+    <div>
+      <div class="section-head">
+        <h2 class="section-label"><span class="tick"></span>Recent field notes</h2>
+      </div>
+      <ul class="log-list">
+        <li class="log-entry" style="--entry-color: var(--rust)">
+          <span class="log-date">2026-09-08</span>
+          <div class="log-body">
+            <span class="tag" style="color:var(--rust)">seismology</span>
+            <h4>P- and S-wave velocities in layered media</h4>
+            <p>How velocity contrasts at layer boundaries produce reflections, refractions, and head waves.</p>
+            <a href="resources.html" class="log-link">View note</a>
+          </div>
+        </li>
+        <li class="log-entry" style="--entry-color: var(--teal)">
+          <span class="log-date">2026-09-03</span>
+          <div class="log-body">
+            <span class="tag" style="color:var(--teal)">gravity</span>
+            <h4>Bouguer vs. free-air correction, worked examples</h4>
+            <p>Step-by-step corrections for a station survey, with common sign-error pitfalls.</p>
+            <a href="resources.html" class="log-link">View note</a>
+          </div>
+        </li>
+        <li class="log-entry" style="--entry-color: var(--ochre)">
+          <span class="log-date">2026-08-27</span>
+          <div class="log-body">
+            <span class="tag" style="color:var(--ochre)">tectonics</span>
+            <h4>Stress regimes at the three plate boundary types</h4>
+            <p>Divergent, convergent, and transform margins, and what earthquake focal mechanisms reveal about each.</p>
+            <a href="resources.html" class="log-link">View note</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="section-head">
+        <h2 class="section-label"><span class="tick" style="background:var(--teal)"></span>Tools</h2>
+      </div>
+      <a href="tools.html#travel-time" class="tool-mini">
+        <h4>Travel-time calculator</h4>
+        <p>Depth and velocity to one-way / two-way travel time.</p>
+      </a>
+      <a href="tools.html#units" class="tool-mini">
+        <h4>Unit converter</h4>
+        <p>Gravity, magnetic field, depth, and density units.</p>
+      </a>
+      <a href="tools.html#wavelength" class="tool-mini">
+        <h4>Wavelength converter</h4>
+        <p>Seismic velocity and frequency to wavelength.</p>
+      </a>
+
+      <div class="paper-note" style="margin-top:24px">
+        <h3>This week</h3>
+        <p>Focal mechanisms and beachball diagrams — if the stereonet projections aren't clicking yet, start with the tectonics subject page before the resource list.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="contour"></div>
+  <div class="wrap footer-inner">
+    <p>STRATA — a self-hosted study portal for geophysics coursework.</p>
+    <p>Built for review, not for grading.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
