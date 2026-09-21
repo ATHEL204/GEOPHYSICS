@@ -4,7 +4,7 @@
    field-notebook paper insets on a deep basalt ground.
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root{
   --ink: #14181c;
@@ -25,7 +25,6 @@
   --font-display: 'Fraunces', serif;
   --font-body: 'IBM Plex Sans', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
-  --font-label: 'Space Grotesk', 'IBM Plex Sans', system-ui, sans-serif;
 }
 
 *{ box-sizing: border-box; }
@@ -180,7 +179,7 @@ h1, h2, h3{
 .hero-inner .wrap{ max-width: 720px; }
 
 .hero-eyebrow{
-  font-family: var(--font-label);
+  font-family: 'Space Grotesk', sans-serif ;
   font-size: 0.85rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -298,7 +297,7 @@ h1, h2, h3{
 .subject-card:hover{ background: var(--panel-raised); }
 
 .subject-card .range{
-  font-family: var(--font-label);
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: var(--card-color, var(--rust));
@@ -354,6 +353,10 @@ h1, h2, h3{
   padding-top: 2px;
 }
 
+.log-link.disabled:hover {
+  opacity: 0.6;
+}
+
 .log-body h4{
   font-family: var(--font-body);
   font-weight: 600;
@@ -392,18 +395,6 @@ h1, h2, h3{
 .log-link.disabled:hover {
   opacity: 0.6;
 }
-
-.pending-note{
-  display: inline-block;
-  margin-left: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--ochre);
-  opacity: 0;
-  transition: opacity 0.18s ease;
-}
-
-.pending-note.visible{ opacity: 1; }
 
 /* ---------- Tool mini-cards ---------- */
 .tool-mini{
@@ -595,7 +586,7 @@ footer{
 }
 
 .subject-detail .range{
-  font-family: var(--font-label);
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: var(--entry-color, var(--rust));
@@ -646,74 +637,4 @@ footer{
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior: auto; }
-  .log-entry{ animation: none; }
-  .pending-note{ transition: none; }
-}
-
-/* ---------- Note detail page (note.html) ---------- */
-.note-wrap{ max-width: 720px; }
-
-.note-meta{
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  margin-bottom: 14px;
-}
-
-.note .page-head{
-  border-left: 3px solid var(--entry-color, var(--rust));
-}
-
-.note h2{
-  font-size: 1.3rem;
-  margin: 40px 0 12px;
-}
-
-.note p{
-  color: var(--text);
-  max-width: 68ch;
-  margin: 0 0 16px;
-}
-
-.note .paper-note{ margin: 28px 0; }
-
-.note .topic-list{ margin-bottom: 24px; }
-
-.note .topic-list li{
-  color: var(--text-muted);
-  line-height: 1.55;
-  padding-bottom: 6px;
-}
-
-.note .topic-list li strong{ color: var(--text); font-weight: 600; }
-
-.formula{
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  background: var(--panel);
-  border-left: 3px solid var(--entry-color, var(--rust));
-  padding: 18px 20px;
-  margin: 24px 0;
-  color: var(--text);
-  overflow-x: auto;
-}
-
-.check-list{
-  margin: 0 0 32px;
-  padding-left: 20px;
-  color: var(--text-muted);
-}
-
-.check-list li{
-  margin-bottom: 8px;
-  padding-left: 4px;
-}
-
-.note-nav{
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 40px;
-  padding-top: 28px;
-  border-top: 1px solid var(--line);
 }
