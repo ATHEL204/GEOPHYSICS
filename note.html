@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P- and S-wave velocities in layered media — STRATA</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="wordmark"><span class="tick"></span>STRATA <small>study portal</small></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="subjects.html">Subjects</a></li>
+      <li><a href="resources.html" class="active">Resources</a></li>
+      <li><a href="tools.html">Tools</a></li>
+    </ul>
+  </div>
+</nav>
+
+<article class="note" style="--entry-color: var(--rust)">
+
+  <header class="page-head">
+    <div class="wrap note-wrap">
+      <div class="note-meta">
+        <span class="tag" style="color:var(--rust)">seismology</span>
+        <span class="log-date">2026-09-08</span>
+      </div>
+      <h1>P- and S-wave velocities in layered media</h1>
+      <p>How velocity contrasts at layer boundaries produce reflections, refractions, and head waves.</p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap note-wrap">
+
+      <div class="paper-note">
+        <h3>Before you start</h3>
+        <p>You need Snell's law and the definitions of P- and S-wave velocity in terms of elastic moduli. Everything below builds on those two.</p>
+      </div>
+
+      <h2>Why velocity changes with depth</h2>
+      <p>Body-wave velocity depends on the elastic moduli and density of the medium. P-waves travel through compression and dilatation, so they depend on both the bulk modulus and the shear modulus. S-waves travel through shear alone, so they depend only on the shear modulus and density — which is why they don't propagate through fluids at all.</p>
+
+      <p>Because rock properties change with depth — through compaction, mineralogy, and pore fluid — velocity is rarely constant. In practice you model the subsurface as a stack of layers, each with its own velocity, and treat the boundaries between them as the interesting part.</p>
+
+      <div class="formula">
+        V<sub>P</sub> = √[(K + 4μ/3) / ρ]  &nbsp;&nbsp;·&nbsp;&nbsp;  V<sub>S</sub> = √(μ / ρ)
+      </div>
+
+      <h2>What happens at a boundary</h2>
+      <p>When a wave meets an interface where velocity changes, its energy splits three ways. Part reflects back into the first layer, part refracts into the second at an angle set by Snell's law, and — at one specific angle — part travels along the interface as a head wave before returning to the surface.</p>
+
+      <ul class="topic-list" style="grid-template-columns: 1fr;">
+        <li><strong>Reflection</strong> — strength depends on the impedance contrast (velocity × density) across the boundary.</li>
+        <li><strong>Refraction</strong> — the ray bends toward the horizontal when entering a faster layer.</li>
+        <li><strong>Head wave</strong> — generated at the critical angle, where the refracted ray travels along the interface.</li>
+      </ul>
+
+      <h2>The critical angle</h2>
+      <p>The critical angle is where the refracted ray runs exactly along the boundary. Past it, no energy refracts into the lower layer at all — everything reflects. This is total internal reflection, and it only exists when the lower layer is faster than the upper one.</p>
+
+      <div class="formula">
+        sin θ<sub>c</sub> = V<sub>1</sub> / V<sub>2</sub>  &nbsp;&nbsp;(requires V<sub>2</sub> &gt; V<sub>1</sub>)
+      </div>
+
+      <h2>Worked example</h2>
+      <p>A layer with V₁ = 2000 m/s overlies one with V₂ = 4000 m/s. The critical angle is arcsin(2000/4000) = arcsin(0.5) = 30°. Beyond 30° of incidence, the first arrival at distant geophones is the head wave rather than the direct wave — which is exactly what a refraction survey is designed to catch.</p>
+
+      <div class="paper-note">
+        <h3>Common mistake</h3>
+        <p>The critical-angle formula has no solution when the lower layer is slower. A velocity inversion produces no head wave, and a refraction survey will miss the layer entirely — a hidden-layer problem, not a data error.</p>
+      </div>
+
+      <h2>Check yourself</h2>
+      <ol class="check-list">
+        <li>Why can't S-waves travel through the outer core?</li>
+        <li>A layer at 1800 m/s sits over one at 1500 m/s. What's the critical angle?</li>
+        <li>Two layers have equal velocity but different density. Is there a reflection?</li>
+      </ol>
+
+      <div class="note-nav">
+        <a href="resources.html" class="btn btn-ghost">Back to resources</a>
+        <a href="tools.html#travel-time" class="btn btn-primary">Open travel-time calculator</a>
+      </div>
+
+    </div>
+  </section>
+</article>
+
+<footer>
+  <div class="contour"></div>
+  <div class="wrap footer-inner">
+    <p>STRATA — a self-hosted study portal for geophysics coursework.</p>
+    <p>Built for review, not for grading.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

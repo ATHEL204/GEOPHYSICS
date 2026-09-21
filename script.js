@@ -3,11 +3,12 @@
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-  initNav();
-  initHeroTrace();
-  initResourceFilters();
-  initTools();
-  initPendingLinks();
+  // Each runs independently: a failure in one must not stop the others.
+  [initNav, initHeroTrace, initResourceFilters, initTools, initPendingLinks]
+    .forEach(fn => {
+      try { fn(); }
+      catch (err) { console.error(fn.name + ' failed:', err); }
+    });
 });
 
 /* ---------- Mobile nav ---------- */
@@ -15,17 +16,20 @@ function initNav(){
   const toggle = document.querySelector('.nav-toggle');
   const links = document.querySelector('.nav-links');
   if(!toggle || !links) return;
- toggle.addEventListener('click', () => {
-  const isOpen = links.classList.toggle('open');
-  toggle.setAttribute('aria-expanded', isOpen);
-});
+  toggle.addEventListener('click', () => {
+    const isOpen = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen);
+  });
+}
 
 /* ---------- Hero seismic trace ---------- */
 function initHeroTrace(){
   const canvas = document.getElementById('hero-trace');
-  if(!canvas) return;
+  if(!canvas || !canvas.getContext) return;
   const ctx = canvas.getContext('2d');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!ctx) return;
+  const reduceMotion = typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function resize(){
     canvas.width = canvas.clientWidth * devicePixelRatio;
@@ -85,6 +89,12 @@ function initResourceFilters(){
       entries.forEach(entry => {
         const match = subject === 'all' || entry.dataset.subject === subject;
         entry.style.display = match ? '' : 'none';
+        if(match){
+          // Restart the fade so it plays on filter, not only on page load
+          entry.style.animation = 'none';
+          void entry.offsetWidth;
+          entry.style.animation = '';
+        }
       });
     });
   });
@@ -97,53 +107,86 @@ function initTools(){
   initWaveTool();
 }
 
+// Reads a numeric input by id. Returns NaN when empty or non-numeric.
+function numValue(id){
+  const el = document.getElementById(id);
+  if(!el) return NaN;
+  const raw = el.value.trim();
+  if(raw === '') return NaN;
+  return parseFloat(raw);
+}
+
 function initTravelTimeTool(){
   const form = document.getElementById('travel-time-tool');
   if(!form) return;
   const result = form.querySelector('.tool-result');
 
-  form.addEventListener('input', () => {
-    const velocity = parseFloat(form.velocity.value);   // m/s
-    const depth = parseFloat(form.depth.value);          // m
-    if(isNaN(velocity) || isNaN(depth) || velocity <= 0 || depth < 0){
+  function update(){
+    const velocity = numValue('tt-velocity');   // m/s
+    const depth = numValue('tt-depth');         // m
+
+    if(Number.isNaN(velocity) || Number.isNaN(depth)){
       result.textContent = 'Enter velocity and depth to calculate travel time.';
       return;
     }
-    // Straight-ray vertical two-way travel time
+    if(velocity <= 0){
+      result.textContent = 'Velocity must be greater than zero.';
+      return;
+    }
+    if(depth < 0){
+      result.textContent = 'Depth cannot be negative.';
+      return;
+    }
+
+    // Straight-ray, vertical-incidence travel time
     const oneWay = depth / velocity;
     const twoWay = oneWay * 2;
     result.textContent =
-      `One-way travel time: ${oneWay.toFixed(4)} s  ·  Two-way: ${twoWay.toFixed(4)} s`;
-  });
+      `One-way: ${oneWay.toFixed(4)} s   Two-way: ${twoWay.toFixed(4)} s`;
+  }
+
+  form.addEventListener('input', update);
+  update();
 }
 
 function initUnitTool(){
   const form = document.getElementById('unit-tool');
   if(!form) return;
   const result = form.querySelector('.tool-result');
+  const select = document.getElementById('unit-conversion');
 
   const conversions = {
-    gravity: { from: 'mGal', to: 'm/s²', factor: 1e-5 },
-    'gravity-rev': { from: 'm/s²', to: 'mGal', factor: 1e5 },
-    magnetic: { from: 'nT', to: 'Gauss', factor: 1e-5 },
-    'magnetic-rev': { from: 'Gauss', to: 'nT', factor: 1e5 },
-    depth: { from: 'm', to: 'ft', factor: 3.28084 },
-    'depth-rev': { from: 'ft', to: 'm', factor: 1 / 3.28084 },
-    density: { from: 'g/cm³', to: 'kg/m³', factor: 1000 },
-    'density-rev': { from: 'kg/m³', to: 'g/cm³', factor: 1 / 1000 },
+    gravity:        { from: 'mGal',   to: 'm/s\u00B2',  factor: 1e-5 },
+    'gravity-rev':  { from: 'm/s\u00B2', to: 'mGal',    factor: 1e5 },
+    magnetic:       { from: 'nT',     to: 'Gauss',   factor: 1e-5 },
+    'magnetic-rev': { from: 'Gauss',  to: 'nT',      factor: 1e5 },
+    depth:          { from: 'm',      to: 'ft',      factor: 3.28084 },
+    'depth-rev':    { from: 'ft',     to: 'm',       factor: 1 / 3.28084 },
+    density:        { from: 'g/cm\u00B3', to: 'kg/m\u00B3', factor: 1000 },
+    'density-rev':  { from: 'kg/m\u00B3', to: 'g/cm\u00B3', factor: 1 / 1000 },
   };
 
-  form.addEventListener('input', () => {
-    const key = form.conversion.value;
-    const value = parseFloat(form.value.value);
+  function update(){
+    const key = select ? select.value : null;
+    const value = numValue('unit-value');
     const c = conversions[key];
-    if(isNaN(value) || !c){
+
+    if(!c){
+      result.textContent = 'Choose a conversion.';
+      return;
+    }
+    if(Number.isNaN(value)){
       result.textContent = 'Enter a value to convert.';
       return;
     }
+
     const out = value * c.factor;
-    result.textContent = `${value} ${c.from} = ${out.toPrecision(6)} ${c.to}`;
-  });
+    result.textContent = `${value} ${c.from} = ${formatNumber(out)} ${c.to}`;
+  }
+
+  form.addEventListener('input', update);
+  form.addEventListener('change', update);
+  update();
 }
 
 function initWaveTool(){
@@ -151,24 +194,61 @@ function initWaveTool(){
   if(!form) return;
   const result = form.querySelector('.tool-result');
 
-  form.addEventListener('input', () => {
-    const velocity = parseFloat(form.velocity.value);   // m/s
-    const frequency = parseFloat(form.frequency.value); // Hz
-    if(isNaN(velocity) || isNaN(frequency) || frequency <= 0){
+  function update(){
+    const velocity = numValue('wave-velocity');    // m/s
+    const frequency = numValue('wave-frequency');  // Hz
+
+    if(Number.isNaN(velocity) || Number.isNaN(frequency)){
       result.textContent = 'Enter velocity and frequency to find wavelength.';
       return;
     }
+    if(frequency <= 0){
+      result.textContent = 'Frequency must be greater than zero.';
+      return;
+    }
+    if(velocity <= 0){
+      result.textContent = 'Velocity must be greater than zero.';
+      return;
+    }
+
     const wavelength = velocity / frequency;
-    result.textContent = `Wavelength: ${wavelength.toFixed(2)} m`;
-  });
+    // Vertical resolution is commonly taken as a quarter wavelength
+    result.textContent =
+      `Wavelength: ${wavelength.toFixed(2)} m   Quarter-wavelength: ${(wavelength / 4).toFixed(2)} m`;
+  }
+
+  form.addEventListener('input', update);
+  update();
 }
 
-function initPendingLinks() {
+// Keeps very large and very small results readable.
+function formatNumber(n){
+  const abs = Math.abs(n);
+  if(n !== 0 && (abs < 1e-4 || abs >= 1e7)) return n.toExponential(4);
+  return parseFloat(n.toPrecision(6)).toString();
+}
+
+function initPendingLinks(){
+  document.querySelectorAll('.log-link.disabled').forEach(link => {
+    link.setAttribute('aria-disabled', 'true');
+  });
+
   document.addEventListener('click', (e) => {
     const link = e.target.closest('.log-link.disabled');
-    if (!link) return;
-
+    if(!link) return;
     e.preventDefault();
-    alert('Note currently not available yet.');
+
+    const body = link.closest('.log-body') || link.parentNode;
+    let note = body.querySelector('.pending-note');
+    if(!note){
+      note = document.createElement('span');
+      note.className = 'pending-note';
+      note.setAttribute('role', 'status');
+      note.textContent = 'This note is not written yet.';
+      link.insertAdjacentElement('afterend', note);
+    }
+    note.classList.add('visible');
+    clearTimeout(note._timer);
+    note._timer = setTimeout(() => note.classList.remove('visible'), 2600);
   });
 }
